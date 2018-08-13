@@ -1,7 +1,9 @@
-/*
- * Create a list that holds all of your cards
+/* 
+ * Card Shuffling Functionality
  */
 
+// Create a list that holds all of your cards
+const deckCards = Array.from(document.querySelectorAll('.deck__card'));
 
 /*
  * Display the cards on the page
@@ -12,19 +14,30 @@
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length, temporaryValue, randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
 
-    return array;
+  return array;
 }
 
+function displayCards(array) {
+  const deck = document.querySelector('.deck');
+  const docFragment = document.createDocumentFragment();
+  
+  array.forEach(card => {
+    docFragment.appendChild(card);
+  });
+  deck.appendChild(docFragment);
+}
+
+displayCards(shuffle(deckCards));
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -36,3 +49,4 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
