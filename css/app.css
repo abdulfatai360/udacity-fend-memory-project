@@ -95,6 +95,7 @@ h1 {
   transform: rotateY(0);
   background: #02b3e4;
   cursor: default;
+  pointer-events: none;
 }
 
 .deck .deck__card--show {
@@ -102,9 +103,18 @@ h1 {
 }
 
 .deck .deck__card--match {
+  pointer-events: none;
   cursor: default;
   background: #02ccba;
   font-size: 33px;
+}
+
+.deck__card--dom-hide {
+  display: none;
+}
+
+.deck__card--disabled {
+  pointer-events: none;
 }
 
 /* .deck .deck__card--unmatch {

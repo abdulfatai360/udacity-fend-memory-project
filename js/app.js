@@ -63,6 +63,8 @@ const finOpenedCards = [];
 function cardsMatchInit(event) {
   if (event.target.nodeName === 'LI') {
     cardsMatchFunc(event.target);
+    // movesCounterInit();
+    // console.log('A LI was clicked.');
   }
 }
 
@@ -82,14 +84,29 @@ function createTempOpenedCardList(elem) {
 }
 
 function showCardSymbol(elem) {
-  elem.style.display = 'none';
+  removeCardFromDOM(elem);
   elem.classList.add('deck__card--open', 'deck__card--show');
-  elem.style.display = 'flex';
+  returnCardToDOM(elem);
+}
+
+function removeCardFromDOM(elem) {
+  elem.classList.add('deck__card--dom-hide');
+}
+
+function returnCardToDOM(elem) {
+  elem.classList.remove('deck__card--dom-hide');
 }
 
 function doCardsMatch(tempOpenedCards) {
   const arr = tempOpenedCards;
-  if (arr.length === 2) {
+  const deckCards = Array.from(document.querySelectorAll('.deck__card'));
+  if (arr.length === 2) { 
+    for (const deckCard of deckCards) {
+      if (deckCard === arr[0] || deckCard === arr[1]) {
+        continue;
+      }
+      disableCardFromClick(deckCard);
+    }
     if (arr[0].innerHTML === arr[1].innerHTML) {
       yesCardsMatch(arr);
     } else {
@@ -99,15 +116,22 @@ function doCardsMatch(tempOpenedCards) {
   }
 }
 
+function disableCardFromClick(elem) {
+  elem.classList.add('deck__card--disabled');
+}
+
 function yesCardsMatch(tempOpenedCards) {
   tempOpenedCards.forEach(card => {
-    card.style.display = 'none';
+    removeCardFromDOM(card);
     card.classList.remove('deck__card--open', 'deck__card--show');
     card.classList.add('deck__card--match');
-    card.style.display = 'flex';
+    returnCardToDOM(card);
   })
   tempOpenedCards.splice(0);
   finOpenedCards.push('yes');
+  for (const deckCard of deckCards) {
+    enableCardToClick(deckCard);
+  }
 }
 
 function noCardsDoesntMatch(tempOpenedCards) {
@@ -119,10 +143,28 @@ function noCardsDoesntMatch(tempOpenedCards) {
 
 function returnCardsToDefault() {
   tempOpenedCards.forEach(card => {
-    card.style.display = 'none';
+    removeCardFromDOM(card);
     card.classList.remove('deck__card--open', 'deck__card--show', 'deck__card--unmatch');
-    card.style.display = 'flex';
+    returnCardToDOM(card);
   });
   tempOpenedCards.splice(0);
+  for (const deckCard of deckCards) {
+    enableCardToClick(deckCard);
+  }
 }
 
+function enableCardToClick(elem) {
+  elem.classList.remove('deck__card--disabled');
+}
+
+/* 
+ * Move Counter Functionality
+ */
+// const movesCounter = document.querySelector('.moves__counter');
+// let movesCount = Number(movesCounter.textContent);
+
+// function movesCounterInit() {
+//   movesCount += 1;
+//   console.log('movesCount', movesCount);
+//   movesCounter.textContent = movesCount;
+// }
