@@ -57,15 +57,16 @@ displayCards(shuffle(deckCards));
  */
 
 const deck = document.querySelector('.deck');
-deck.addEventListener('click', gameInit);
+deck.addEventListener('click', gameStartInit);
 const tempOpenedCards = [];
 const finOpenedCards = [];
 
-function gameInit(event) {
+function gameStartInit(event) {
   if (event.target.nodeName === 'LI') {
     cardsMatchInit(event.target);
     // console.log('A LI was clicked.');
-    starRatingInit()
+    starRatingInit();
+    setTimeout(gameOverInit, 500);
   }
 }
 
@@ -139,7 +140,7 @@ function noCardsDontMatch(tempOpenedCards) {
   tempOpenedCards.forEach(card => {
     card.classList.add('deck__card--unmatch');
   })
-  setTimeout(returnCardsToDefault, 1000, tempOpenedCards);
+  setTimeout(returnCardsToDefault, 800, tempOpenedCards);
 }
 
 function returnCardsToDefault() {
@@ -232,4 +233,14 @@ function gameRestartInit() {
 function showStarItem(n) {
   const star = document.querySelector(`.solid-stars li:nth-child(${n})`);
   star.classList.remove('stars__item--remove');
+}
+
+/* 
+ * Game Over Functionality
+ */
+
+function gameOverInit() {
+  if (finOpenedCards.length === 2) {
+    window.alert('Congratulations');
+  }
 }
