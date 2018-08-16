@@ -60,10 +60,14 @@ deck.addEventListener('click', cardsMatchInit);
 const tempOpenedCards = [];
 const finOpenedCards = [];
 
+// Global variables for "Move Counter Functionality"
+// let movesCounter = document.querySelector('.moves__counter');
+// let movesCount = Number(movesCounter.textContent);
+
 function cardsMatchInit(event) {
   if (event.target.nodeName === 'LI') {
     cardsMatchFunc(event.target);
-    // movesCounterInit();
+    movesCounterInit();
     // console.log('A LI was clicked.');
   }
 }
@@ -160,11 +164,10 @@ function enableCardToClick(elem) {
 /* 
  * Move Counter Functionality
  */
-// const movesCounter = document.querySelector('.moves__counter');
-// let movesCount = Number(movesCounter.textContent);
-
-// function movesCounterInit() {
-//   movesCount += 1;
-//   console.log('movesCount', movesCount);
-//   movesCounter.textContent = movesCount;
-// }
+function movesCounterInit() {
+  const movesCounter = document.querySelector('.moves__counter');
+  let movesCount = Number(movesCounter.textContent);
+  movesCount += 1;
+  movesCounter.textContent = movesCount;
+  console.log('movesCount', movesCount);
+}
