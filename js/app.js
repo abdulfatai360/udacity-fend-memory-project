@@ -35,6 +35,8 @@ function displayCards(array) {
     docFragment.appendChild(card);
   });
   deck.appendChild(docFragment);
+
+  console.log(array)
 }
 
 displayCards(shuffle(deckCards));
@@ -49,4 +51,78 @@ displayCards(shuffle(deckCards));
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+/* 
+ * Card Match/Mismatch Functionality
+ */
+const deck = document.querySelector('.deck');
+deck.addEventListener('click', cardsMatchInit);
+const tempOpenedCards = [];
+const finOpenedCards = [];
+
+function cardsMatchInit(event) {
+  if (event.target.nodeName === 'LI') {
+    cardsMatchFunc(event.target);
+  }
+}
+
+function cardsMatchFunc(elem) {
+  createTempOpenedCardList(elem);
+
+  tempOpenedCards.forEach(card => {
+    showCardSymbol(card);
+  })
+
+  doCardsMatch(tempOpenedCards);
+}
+
+function createTempOpenedCardList(elem) {
+  tempOpenedCards.push(elem);
+  console.log('Initial Cards List', tempOpenedCards);
+}
+
+function showCardSymbol(elem) {
+  elem.style.display = 'none';
+  elem.classList.add('deck__card--open', 'deck__card--show');
+  elem.style.display = 'flex';
+}
+
+function doCardsMatch(tempOpenedCards) {
+  const arr = tempOpenedCards;
+  if (arr.length === 2) {
+    if (arr[0].innerHTML === arr[1].innerHTML) {
+      yesCardsMatch(arr);
+    } else {
+      noCardsDoesntMatch(arr);
+    }
+    console.log('After Card Matching', tempOpenedCards);
+  }
+}
+
+function yesCardsMatch(tempOpenedCards) {
+  tempOpenedCards.forEach(card => {
+    card.style.display = 'none';
+    card.classList.remove('deck__card--open', 'deck__card--show');
+    card.classList.add('deck__card--match');
+    card.style.display = 'flex';
+  })
+  tempOpenedCards.splice(0);
+  finOpenedCards.push('yes');
+}
+
+function noCardsDoesntMatch(tempOpenedCards) {
+  tempOpenedCards.forEach(card => {
+    card.classList.add('deck__card--unmatch');
+  })
+  setTimeout(returnCardsToDefault, 1000, tempOpenedCards);
+}
+
+function returnCardsToDefault() {
+  tempOpenedCards.forEach(card => {
+    card.style.display = 'none';
+    card.classList.remove('deck__card--open', 'deck__card--show', 'deck__card--unmatch');
+    card.style.display = 'flex';
+  });
+  tempOpenedCards.splice(0);
+}
 
