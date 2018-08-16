@@ -17,7 +17,8 @@ body {
 }
 
 body {
-  background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+  /* Background pattern from Subtle Patterns */
+  background: #ffffff url('../img/geometry2.png');
   font-family: 'Coda', cursive;
 }
 
@@ -48,11 +49,21 @@ h1 {
   margin: 0;
   padding: 0;
   margin: 0 5px 0 0;
+  position: relative;
+}
+
+.hollow-stars {
+  position: absolute;
+  top: 0;
 }
 
 .stars__item {
   list-style: none;
   display: inline-block;
+}
+
+.stars__item--remove {
+  visibility: hidden;
 }
 
 .score-panel .restart {

@@ -55,24 +55,21 @@ displayCards(shuffle(deckCards));
 /* 
  * Card Match/Mismatch Functionality
  */
+
 const deck = document.querySelector('.deck');
-deck.addEventListener('click', cardsMatchInit);
+deck.addEventListener('click', gameInit);
 const tempOpenedCards = [];
 const finOpenedCards = [];
 
-// Global variables for "Move Counter Functionality"
-// let movesCounter = document.querySelector('.moves__counter');
-// let movesCount = Number(movesCounter.textContent);
-
-function cardsMatchInit(event) {
+function gameInit(event) {
   if (event.target.nodeName === 'LI') {
-    cardsMatchFunc(event.target);
-    movesCounterInit();
+    cardsMatchInit(event.target);
     // console.log('A LI was clicked.');
+    starRatingInit()
   }
 }
 
-function cardsMatchFunc(elem) {
+function cardsMatchInit(elem) {
   createTempOpenedCardList(elem);
 
   tempOpenedCards.forEach(card => {
@@ -164,10 +161,40 @@ function enableCardToClick(elem) {
 /* 
  * Move Counter Functionality
  */
+
 function movesCounterInit() {
   const movesCounter = document.querySelector('.moves__counter');
   let movesCount = Number(movesCounter.textContent);
   movesCount += 1;
   movesCounter.textContent = movesCount;
   console.log('movesCount', movesCount);
+  return movesCount;
+}
+
+/* 
+ * Star Rating Functionality
+ */
+
+function starRatingInit() {
+  let movesCount = movesCounterInit();
+  if (movesCount > 20) {
+    hideStarItem(5);
+  }
+
+  if (movesCount > 25) {
+    hideStarItem(4);
+  }
+
+  if (movesCount > 30) {
+    hideStarItem(3);
+  }
+
+  if (movesCount > 35) {
+    hideStarItem(2);
+  }
+}
+
+function hideStarItem(n) {
+  const star = document.querySelector(`.solid-stars li:nth-child(${n})`);
+  star.classList.add('stars__item--remove');
 }
