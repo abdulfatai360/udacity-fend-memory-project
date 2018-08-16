@@ -41,6 +41,7 @@ h1 {
 .score-panel {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 345px;
   margin-bottom: 15px;
 }
@@ -68,6 +69,7 @@ h1 {
 
 .score-panel .restart {
   cursor: pointer;
+  padding: 15px;
 }
 
 /*

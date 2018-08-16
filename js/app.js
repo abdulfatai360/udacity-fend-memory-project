@@ -100,7 +100,7 @@ function returnCardToDOM(elem) {
 
 function doCardsMatch(tempOpenedCards) {
   const arr = tempOpenedCards;
-  const deckCards = Array.from(document.querySelectorAll('.deck__card'));
+  // const deckCards = Array.from(document.querySelectorAll('.deck__card'));
   if (arr.length === 2) { 
     for (const deckCard of deckCards) {
       if (deckCard === arr[0] || deckCard === arr[1]) {
@@ -111,7 +111,7 @@ function doCardsMatch(tempOpenedCards) {
     if (arr[0].innerHTML === arr[1].innerHTML) {
       yesCardsMatch(arr);
     } else {
-      noCardsDoesntMatch(arr);
+      noCardsDontMatch(arr);
     }
     console.log('After Card Matching', tempOpenedCards);
   }
@@ -131,11 +131,11 @@ function yesCardsMatch(tempOpenedCards) {
   tempOpenedCards.splice(0);
   finOpenedCards.push('yes');
   for (const deckCard of deckCards) {
-    enableCardToClick(deckCard);
+    enableCardForClick(deckCard);
   }
 }
 
-function noCardsDoesntMatch(tempOpenedCards) {
+function noCardsDontMatch(tempOpenedCards) {
   tempOpenedCards.forEach(card => {
     card.classList.add('deck__card--unmatch');
   })
@@ -150,11 +150,11 @@ function returnCardsToDefault() {
   });
   tempOpenedCards.splice(0);
   for (const deckCard of deckCards) {
-    enableCardToClick(deckCard);
+    enableCardForClick(deckCard);
   }
 }
 
-function enableCardToClick(elem) {
+function enableCardForClick(elem) {
   elem.classList.remove('deck__card--disabled');
 }
 
@@ -177,7 +177,7 @@ function movesCounterInit() {
 
 function starRatingInit() {
   let movesCount = movesCounterInit();
-  if (movesCount > 20) {
+  if (movesCount > 2) {
     hideStarItem(5);
   }
 
@@ -197,4 +197,39 @@ function starRatingInit() {
 function hideStarItem(n) {
   const star = document.querySelector(`.solid-stars li:nth-child(${n})`);
   star.classList.add('stars__item--remove');
+}
+
+/* 
+ * Game Restart Functionality
+ */
+
+const restartButton = document.querySelector('.restart');
+restartButton.addEventListener('click', gameRestartInit);
+
+function gameRestartInit() {
+  tempOpenedCards.splice(0);
+  finOpenedCards.splice(0);
+
+  // Catch-all class list
+  const classArr = [
+    'deck__card--open',
+    'deck__card--show',
+    'deck__card--match'
+  ]
+  deckCards.forEach(deckCard => {
+    deckCard.classList.remove(...classArr);
+  })
+  displayCards(shuffle(deckCards));
+
+  const movesCounter = document.querySelector('.moves__counter');
+  movesCounter.textContent = 0;
+
+  for (let i = 5; i > 1; i--) {
+    showStarItem(i)
+  }
+}
+
+function showStarItem(n) {
+  const star = document.querySelector(`.solid-stars li:nth-child(${n})`);
+  star.classList.remove('stars__item--remove');
 }
