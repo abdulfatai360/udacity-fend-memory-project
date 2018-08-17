@@ -107,8 +107,8 @@
     
     <div class="modal">
       <div class="modal__inner">
-        <h2>Congratulations!!! Awesome stuff...</h2>
-        <p>You made it to the end. These are your game statistics:</p>
+        <h2 class="modal__header">Congratulations!!!</h2>
+        <p class="modal__msg">Awesome stuff... You made it to the end. These are your game statistics:</p>
     
         <ul class="game-stats">
           <li class="game-stats__item"><b>Star Rating:</b>
@@ -125,10 +125,13 @@
         <button type="button" class="modal__btn--close" title="Close">
           &times;
         </button>
-    
-        <button type="button" class="modal__btn--restart">
-          Play Again
-        </button>
+
+        <div class="btn-holder">
+          <button type="button" class="modal__btn--restart">
+            Play Again
+          </button>
+        </div>
+        
       </div>
     </div>
   </div>

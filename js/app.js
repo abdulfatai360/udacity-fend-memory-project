@@ -343,7 +343,7 @@ function displayGameStats() {
 
   starRating.textContent = getStarRating();
   numOfMoves.textContent = movesCount;
-  completionTime.textContent = `${hours.textContent}hr : ${minutes.textContent}min : ${seconds.textContent}sec`;
+  completionTime.textContent = `${hours.textContent}hr ${minutes.textContent}min ${seconds.textContent}sec`;
 }
 
 function getStarRating() {

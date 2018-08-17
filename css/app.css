@@ -27,11 +27,13 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 0 10px;
 }
 
 h1 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
+  text-transform: uppercase;
 }
 
 /*
@@ -42,14 +44,14 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 385px;
+  width: 100%;
   margin-bottom: 10px;
 }
 
 .score-panel .stars {
   margin: 0;
   padding: 0;
-  margin: 0 5px 0 0;
+  margin-left: 10px;
   position: relative;
 }
 
@@ -69,7 +71,7 @@ h1 {
 
 .score-panel .restart {
   cursor: pointer;
-  padding: 15px;
+  padding: 10px;
 }
 
 /*
@@ -77,11 +79,10 @@ h1 {
  */
 
 .deck {
-  width: 660px;
-  min-height: 680px;
+  width: 100%;
   background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-  padding: 32px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 5px;
   box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
   display: flex;
   flex-wrap: wrap;
@@ -91,12 +92,13 @@ h1 {
 }
 
 .deck__card {
-  height: 125px;
-  width: 125px;
+  height: 110px;
+  width: 23%;
   background: #2e3d49;
   font-size: 0;
   color: #ffffff;
-  border-radius: 8px;
+  border-radius: 5px;
+  margin: 5px 0;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -120,6 +122,10 @@ h1 {
   cursor: default;
   background: #02ccba;
   font-size: 33px;
+}
+
+.deck .deck__card--unmatch {
+
 }
 
 .deck__card--dom-hide {
@@ -197,7 +203,7 @@ h1 {
   top: 50%;
   left: 50%;
   width: 90%;
-  padding: 20px;
+  padding: 10px;
   transform: translate(-50%, -50%);
   background-color: #fff;
 }
@@ -205,12 +211,19 @@ h1 {
 .modal__inner {
   margin: 0 auto;
   border: 1px solid #000;
-  padding: 20px;
+  padding: 10px;
   position: relative;
 }
 
+.game-stats {
+  padding: 0;
+  list-style-type: none;
+  margin-bottom: 1.5em;
+  line-height: 1.5em;
+}
+
 .modal__btn--close {
-  font-size: 1.8em;
+  font-size: 1.5em;
   padding: 0 5px;
   position: absolute;
   top: 0;
@@ -218,7 +231,12 @@ h1 {
   cursor: pointer;
 }
 
+.btn-holder {
+  text-align: center;
+}
+
 .modal__btn--restart {
-  padding: 10px;
+  padding: 10px 5px;
   cursor: pointer;
+  font-weight: 700;
 }
