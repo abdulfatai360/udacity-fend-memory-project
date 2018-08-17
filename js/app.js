@@ -1,9 +1,4 @@
-/* 
- * Card Shuffling Functionality
- */
-
 // Create a list that holds all of your cards
-const deckCards = Array.from(document.querySelectorAll('.deck__card'));
 
 /*
  * Display the cards on the page
@@ -11,6 +6,23 @@ const deckCards = Array.from(document.querySelectorAll('.deck__card'));
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+
+/*
+ * set up the event listener for a card. If a card is clicked:
+ *  - display the card's symbol (put this functionality in another function that you call from this one)
+ *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ *  - if the list already has another card, check to see if the two cards match
+ *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
+ *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
+ *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+ *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+ */
+
+/* 
+ * Card Shuffling Functionality
+ */
+
+const deckCards = Array.from(document.querySelectorAll('.deck__card'));
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -30,27 +42,13 @@ function shuffle(array) {
 function displayCards(array) {
   const deck = document.querySelector('.deck');
   const docFragment = document.createDocumentFragment();
-  
   array.forEach(card => {
     docFragment.appendChild(card);
   });
   deck.appendChild(docFragment);
-
-  console.log(array)
 }
 
 displayCards(shuffle(deckCards));
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 
 /* 
  * Card Match/Mismatch Functionality
@@ -64,26 +62,22 @@ const finOpenedCards = [];
 function gameStartInit(event) {
   if (event.target.nodeName === 'LI') {
     cardsMatchInit(event.target);
-    // console.log('A LI was clicked.');
+    movesCounterInit();
     starRatingInit();
     setTimeout(gameOverInit, 500);
-    // movesCounterInit()
   }
 }
 
 function cardsMatchInit(elem) {
   createTempOpenedCardList(elem);
-
   tempOpenedCards.forEach(card => {
     showCardSymbol(card);
-  })
-
+  });
   doCardsMatch(tempOpenedCards);
 }
 
 function createTempOpenedCardList(elem) {
   tempOpenedCards.push(elem);
-  console.log('Initial Cards List', tempOpenedCards);
 }
 
 function showCardSymbol(elem) {
@@ -102,7 +96,7 @@ function returnCardToDOM(elem) {
 
 function doCardsMatch(tempOpenedCards) {
   const arr = tempOpenedCards;
-  // const deckCards = Array.from(document.querySelectorAll('.deck__card'));
+
   if (arr.length === 2) { 
     for (const deckCard of deckCards) {
       if (deckCard === arr[0] || deckCard === arr[1]) {
@@ -115,7 +109,6 @@ function doCardsMatch(tempOpenedCards) {
     } else {
       noCardsDontMatch(arr);
     }
-    console.log('After Card Matching', tempOpenedCards);
   }
 }
 
@@ -129,7 +122,7 @@ function yesCardsMatch(tempOpenedCards) {
     card.classList.remove('deck__card--open', 'deck__card--show');
     card.classList.add('deck__card--match');
     returnCardToDOM(card);
-  })
+  });
   tempOpenedCards.splice(0);
   finOpenedCards.push('yes');
   for (const deckCard of deckCards) {
@@ -140,7 +133,7 @@ function yesCardsMatch(tempOpenedCards) {
 function noCardsDontMatch(tempOpenedCards) {
   tempOpenedCards.forEach(card => {
     card.classList.add('deck__card--unmatch');
-  })
+  });
   setTimeout(returnCardsToDefault, 800, tempOpenedCards);
 }
 
@@ -164,15 +157,14 @@ function enableCardForClick(elem) {
  * Game Moves Counter Functionality
  */
 
-// let movesCount;
+let movesCount;
 
 function movesCounterInit() {
   const movesCounter = document.querySelector('.moves__counter');
-  let movesCount = Number(movesCounter.textContent);
+  movesCount = Number(movesCounter.textContent);
   movesCount += 1;
   movesCounter.textContent = movesCount;
-  console.log('movesCount', movesCount);
-  return movesCount;
+  // return movesCount;
 }
 
 /* 
@@ -180,30 +172,30 @@ function movesCounterInit() {
  */
 
 function starRatingInit() {
-  let movesCount = movesCounterInit();
+  // let movesCount = movesCounterInit();
 
   if (movesCount == 1) {
-    gameTimeInit();
+    gameTimerInit();
   }
 
   if (movesCount > 2) {
-    hideStarItem(5);
+    removeStarItem(5);
   }
 
   if (movesCount > 25) {
-    hideStarItem(4);
+    removeStarItem(4);
   }
 
   if (movesCount > 30) {
-    hideStarItem(3);
+    removeStarItem(3);
   }
 
   if (movesCount > 35) {
-    hideStarItem(2);
+    removeStarItem(2);
   }
 }
 
-function hideStarItem(n) {
+function removeStarItem(n) {
   const star = document.querySelector(`.solid-stars li:nth-child(${n})`);
   star.classList.add('stars__item--remove');
 }
@@ -218,27 +210,23 @@ const seconds = document.querySelector('.timer__seconds');
 let timeCount = 0;
 let timeTracker;
 
-function gameTimeInit() {
-  timeTracker = gameTimeTracker();
+function gameTimerInit() {
+  timeTracker = setInterval(gameTimeTracker, 1000);
 }
 
 function gameTimeTracker() {
-  let interval = setInterval(() => {
-    timeCount++;
-    let numOfSeconds = timeCount % 60;
-    let numOfMinutes = Number.parseInt(timeCount / 60);
-    let numOfHours = Number.parseInt(timeCount / 3600);
+  timeCount++;
+  let numOfSeconds = timeCount % 60;
+  let numOfMinutes = Number.parseInt(timeCount / 60);
+  let numOfHours = Number.parseInt(timeCount / 3600);
 
-    if (numOfMinutes >= 60) {
-      numOfMinutes = numOfMinutes % 60;
-    }
+  if (numOfMinutes >= 60) {
+    numOfMinutes = numOfMinutes % 60;
+  }
 
-    seconds.textContent = padTime(numOfSeconds);
-    minutes.textContent = padTime(numOfMinutes);
-    hours.textContent = padTime(numOfHours);
-  }, 1000);
-
-  return interval;
+  seconds.textContent = padTime(numOfSeconds);
+  minutes.textContent = padTime(numOfMinutes);
+  hours.textContent = padTime(numOfHours);
 }
 
 function padTime(num) {
@@ -246,7 +234,13 @@ function padTime(num) {
 }
 
 window.addEventListener('blur', stopTimer);
-window.addEventListener('focus', gameTimeInit);
+window.addEventListener('focus', () => {
+  if (movesCount === 0 || movesCount === undefined) {
+    return;
+  } else {
+    gameTimerInit();
+  }
+});
 
 function stopTimer() {
   clearInterval(timeTracker);
@@ -260,29 +254,51 @@ const restartButton = document.querySelector('.restart');
 restartButton.addEventListener('click', gameRestartInit);
 
 function gameRestartInit() {
+  resetOpenedCardLists();
+  resetDeckCards();
+  resetMovesCounter();
+  resetTimer();
+
+  for (let i = 5; i > 1; i--) {
+    resetStarItem(i);
+  }
+}
+
+function resetOpenedCardLists() {
   tempOpenedCards.splice(0);
   finOpenedCards.splice(0);
+}
 
-  // Catch-all class list
+function resetDeckCards() {
   const classArr = [
     'deck__card--open',
     'deck__card--show',
     'deck__card--match'
-  ]
+  ];
   deckCards.forEach(deckCard => {
     deckCard.classList.remove(...classArr);
-  })
+  });
   displayCards(shuffle(deckCards));
-
-  const movesCounter = document.querySelector('.moves__counter');
-  movesCounter.textContent = 0;
-
-  for (let i = 5; i > 1; i--) {
-    showStarItem(i)
-  }
 }
 
-function showStarItem(n) {
+function resetMovesCounter() {
+  movesCount = 0;
+  const movesCounter = document.querySelector('.moves__counter');
+  movesCounter.textContent = movesCount;
+}
+
+function resetTimer() {
+  timeCount = 0;
+  // clearInterval(timeTracker);
+  // timeTracker = 0;
+  stopTimer();
+  const timerContainer = document.querySelectorAll('.timer span');
+  timerContainer.forEach(item => {
+    item.textContent = '00';
+  });
+}
+
+function resetStarItem(n) {
   const star = document.querySelector(`.solid-stars li:nth-child(${n})`);
   star.classList.remove('stars__item--remove');
 }
