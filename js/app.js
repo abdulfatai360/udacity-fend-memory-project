@@ -67,6 +67,7 @@ function gameStartInit(event) {
     // console.log('A LI was clicked.');
     starRatingInit();
     setTimeout(gameOverInit, 500);
+    // movesCounterInit()
   }
 }
 
@@ -160,8 +161,10 @@ function enableCardForClick(elem) {
 }
 
 /* 
- * Move Counter Functionality
+ * Game Moves Counter Functionality
  */
+
+// let movesCount;
 
 function movesCounterInit() {
   const movesCounter = document.querySelector('.moves__counter');
@@ -173,11 +176,16 @@ function movesCounterInit() {
 }
 
 /* 
- * Star Rating Functionality
+ * Game Star Rating Functionality
  */
 
 function starRatingInit() {
   let movesCount = movesCounterInit();
+
+  if (movesCount == 1) {
+    gameTimeInit();
+  }
+
   if (movesCount > 2) {
     hideStarItem(5);
   }
@@ -198,6 +206,50 @@ function starRatingInit() {
 function hideStarItem(n) {
   const star = document.querySelector(`.solid-stars li:nth-child(${n})`);
   star.classList.add('stars__item--remove');
+}
+
+/* 
+ * Game Timer Functionality
+ */
+
+const hours = document.querySelector('.timer__hours');
+const minutes = document.querySelector('.timer__minutes');
+const seconds = document.querySelector('.timer__seconds');
+let timeCount = 0;
+let timeTracker;
+
+function gameTimeInit() {
+  timeTracker = gameTimeTracker();
+}
+
+function gameTimeTracker() {
+  let interval = setInterval(() => {
+    timeCount++;
+    let numOfSeconds = timeCount % 60;
+    let numOfMinutes = Number.parseInt(timeCount / 60);
+    let numOfHours = Number.parseInt(timeCount / 3600);
+
+    if (numOfMinutes >= 60) {
+      numOfMinutes = numOfMinutes % 60;
+    }
+
+    seconds.textContent = padTime(numOfSeconds);
+    minutes.textContent = padTime(numOfMinutes);
+    hours.textContent = padTime(numOfHours);
+  }, 1000);
+
+  return interval;
+}
+
+function padTime(num) {
+  return (num < 10) ? String(num).padStart(2, '0') : num;
+}
+
+window.addEventListener('blur', stopTimer);
+window.addEventListener('focus', gameTimeInit);
+
+function stopTimer() {
+  clearInterval(timeTracker);
 }
 
 /* 

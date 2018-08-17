@@ -42,8 +42,8 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 345px;
-  margin-bottom: 15px;
+  width: 385px;
+  margin-bottom: 10px;
 }
 
 .score-panel .stars {
