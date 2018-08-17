@@ -102,6 +102,37 @@
     </ul>
   </div>
 
+  <div class="popup">
+    <div class="overlay"></div>
+    
+    <div class="modal">
+      <div class="modal__inner">
+        <h2>Congratulations!!! Awesome stuff...</h2>
+        <p>You made it to the end. These are your game statistics:</p>
+    
+        <ul class="game-stats">
+          <li class="game-stats__item"><b>Star Rating:</b>
+            <span class="star-rating"></span>
+          </li>
+          <li class="game-stats__item"><b>Number of Moves:</b>
+            <span class="no-of-moves"></span>
+          </li>
+          <li class="game-stats__item"><b>Completion Time:</b>
+            <span class="completion-time"></span>
+          </li>
+        </ul>
+    
+        <button type="button" class="modal__btn--close" title="Close">
+          &times;
+        </button>
+    
+        <button type="button" class="modal__btn--restart">
+          Play Again
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/app.js"></script>
 </body>
 </html>

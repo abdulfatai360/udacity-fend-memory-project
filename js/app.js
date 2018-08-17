@@ -1,6 +1,5 @@
-// Create a list that holds all of your cards
-
 /*
+ * Create a list that holds all of your cards
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
@@ -19,7 +18,7 @@
  */
 
 /* 
- * Card Shuffling Functionality
+ * CARD SHUFFLING FUNCTIONALITY
  */
 
 const deckCards = Array.from(document.querySelectorAll('.deck__card'));
@@ -51,7 +50,7 @@ function displayCards(array) {
 displayCards(shuffle(deckCards));
 
 /* 
- * Card Match/Mismatch Functionality
+ * CARD MATCH/MISMATCH FUNCTIONALITY
  */
 
 const deck = document.querySelector('.deck');
@@ -154,7 +153,7 @@ function enableCardForClick(elem) {
 }
 
 /* 
- * Game Moves Counter Functionality
+ * GAME MOVES COUNTER FUNCTIONALITY
  */
 
 let movesCount;
@@ -164,16 +163,13 @@ function movesCounterInit() {
   movesCount = Number(movesCounter.textContent);
   movesCount += 1;
   movesCounter.textContent = movesCount;
-  // return movesCount;
 }
 
 /* 
- * Game Star Rating Functionality
+ * PLAYER STAR RATING Functionality
  */
 
 function starRatingInit() {
-  // let movesCount = movesCounterInit();
-
   if (movesCount == 1) {
     gameTimerInit();
   }
@@ -201,7 +197,7 @@ function removeStarItem(n) {
 }
 
 /* 
- * Game Timer Functionality
+ * GAME TIMER FUNCTIONALITY
  */
 
 const hours = document.querySelector('.timer__hours');
@@ -235,19 +231,28 @@ function padTime(num) {
 
 window.addEventListener('blur', stopTimer);
 window.addEventListener('focus', () => {
-  if (movesCount === 0 || movesCount === undefined) {
+  if (movesCount === 0 || movesCount === undefined || isPopupOnPage()) {
     return;
   } else {
     gameTimerInit();
   }
 });
 
+function isPopupOnPage() {
+  const popup = document.querySelector('.popup');
+  if (popup.classList.contains('popup--show')) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function stopTimer() {
   clearInterval(timeTracker);
 }
 
 /* 
- * Game Restart Functionality
+ * GAME RESTART FUNCTIONALITY
  */
 
 const restartButton = document.querySelector('.restart');
@@ -270,13 +275,13 @@ function resetOpenedCardLists() {
 }
 
 function resetDeckCards() {
-  const classArr = [
+  const deckResetClasses = [
     'deck__card--open',
     'deck__card--show',
     'deck__card--match'
   ];
   deckCards.forEach(deckCard => {
-    deckCard.classList.remove(...classArr);
+    deckCard.classList.remove(...deckResetClasses);
   });
   displayCards(shuffle(deckCards));
 }
@@ -289,8 +294,6 @@ function resetMovesCounter() {
 
 function resetTimer() {
   timeCount = 0;
-  // clearInterval(timeTracker);
-  // timeTracker = 0;
   stopTimer();
   const timerContainer = document.querySelectorAll('.timer span');
   timerContainer.forEach(item => {
@@ -304,11 +307,50 @@ function resetStarItem(n) {
 }
 
 /* 
- * Game Over Functionality
+ * GAME OVER FUNCTIONALITY
  */
 
 function gameOverInit() {
-  if (finOpenedCards.length === 2) {
-    window.alert('Congratulations');
+  if (finOpenedCards.length === (deckCards.length / 2)) {
+    const popup = document.querySelector('.popup');
+    const overlay = document.querySelector('.overlay');
+    const modal = document.querySelector('.modal');
+    const modalClose = document.querySelector('.modal__btn--close');
+    const modalRestart = document.querySelector('.modal__btn--restart');
+
+    displayPopup(popup);
+    displayGameStats();
+
+    const restartActivators = [overlay, modalClose, modalRestart];
+    for (const restartActivator of restartActivators) {
+      restartActivator.addEventListener('click', () => {
+        popup.classList.remove('popup--show');
+        gameRestartInit();
+      });
+    }
   }
+}
+
+function displayPopup(popupHolder) {
+  stopTimer();
+  popupHolder.classList.add('popup--show');
+}
+
+function displayGameStats() {
+  const starRating = document.querySelector('.star-rating');
+  const numOfMoves = document.querySelector('.no-of-moves');
+  const completionTime = document.querySelector('.completion-time');
+
+  starRating.textContent = getStarRating();
+  numOfMoves.textContent = movesCount;
+  completionTime.textContent = `${hours.textContent}hr : ${minutes.textContent}min : ${seconds.textContent}sec`;
+}
+
+function getStarRating() {
+  const stars = Array.from(document.querySelectorAll(`.solid-stars li`));
+  let numOfStars = stars.filter(star => {
+    return !(star.classList.contains('stars__item--remove'));
+  });
+  numOfStars = numOfStars.length;
+  return numOfStars;
 }
