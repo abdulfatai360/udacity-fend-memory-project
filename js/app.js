@@ -133,7 +133,7 @@ function noCardsDontMatch(tempOpenedCards) {
   tempOpenedCards.forEach(card => {
     card.classList.add('deck__card--unmatch');
   });
-  setTimeout(returnCardsToDefault, 800, tempOpenedCards);
+  setTimeout(returnCardsToDefault, 1000, tempOpenedCards);
 }
 
 function returnCardsToDefault() {

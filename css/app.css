@@ -24,10 +24,13 @@ body {
 
 .container {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
   padding: 0 10px;
+  max-width: 600px;
+  position: relative;
 }
 
 h1 {
@@ -51,7 +54,7 @@ h1 {
 .score-panel .stars {
   margin: 0;
   padding: 0;
-  margin-left: 10px;
+  margin-left: 5px;
   position: relative;
 }
 
@@ -72,6 +75,15 @@ h1 {
 .score-panel .restart {
   cursor: pointer;
   padding: 10px;
+  padding-right: 5px;
+}
+
+.timer i {
+  color: #0b4980;
+}
+
+.restart i {
+  color: #f00;
 }
 
 /*
@@ -80,78 +92,79 @@ h1 {
 
 .deck {
   width: 100%;
-  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
   padding: 10px;
-  border-radius: 5px;
-  box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
   margin: 0 0 3em;
+  flex-wrap: wrap;
+  border-radius: 3px;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid rgba(58, 113, 162, 0.50);
 }
 
 .deck__card {
-  height: 110px;
+  height: 105px;
   width: 23%;
-  background: #2e3d49;
+  background-color: rgba(58, 113, 162, 0.5);
+  background: rgba(58, 113, 162, 0.5) 
+              url(../img/card-default-bg.jpg) 
+              no-repeat 
+              center center;
+  background-size: cover;
   font-size: 0;
-  color: #ffffff;
   border-radius: 5px;
   margin: 5px 0;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+  border: 2px solid rgb(58, 113, 162);
+  transition: 0.5s ease height;
 }
 
-.deck .deck__card--open {
-  transform: rotateY(0);
-  background: #02b3e4;
-  cursor: default;
-  pointer-events: none;
+@media screen and (min-width: 405px) {
+  .deck__card {
+    height: 125px;
+  }
 }
 
-.deck .deck__card--show {
-  font-size: 33px;
+@media screen and (min-width: 440px) {
+  .deck__card {
+    height: 135px;
+  }
 }
 
-.deck .deck__card--match {
-  pointer-events: none;
-  cursor: default;
-  background: #02ccba;
-  font-size: 33px;
+@media screen and (min-width: 470px) {
+  .deck__card {
+    height: 140px;
+  }
 }
 
-.deck .deck__card--unmatch {
-
+@media screen and (min-width: 515px) {
+  .deck__card {
+    height: 150px;
+  }
 }
 
-.deck__card--dom-hide {
-  display: none;
+@media screen and (min-width: 560px) {
+  .deck__card {
+    height: 160px;
+  }
 }
 
-.deck__card--disabled {
-  pointer-events: none;
+@media screen and (min-width: 600px) {
+  .deck__card {
+    height: 170px;
+  }
 }
 
-/* .deck .deck__card--unmatch {
-  background: red;
-} */
-
-/* .flipInY {
-  -webkit-backface-visibility: visible !important;
-  backface-visibility: visible !important;
-  animation-name: flipInY;
-} */
-
-/* .animated {
+/* Animation rulesets from Daniel Eden (https://daneden.github.io/animate.css/) */
+.animated {
   animation-duration: 1s;
   animation-fill-mode: both;
-} */
+}
 
-/* @keyframes flipInY {
+@keyframes flipInY {
   from {
     transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
     animation-timing-function: ease-in;
@@ -175,7 +188,89 @@ h1 {
   to {
     transform: perspective(400px);
   }
-} */
+}
+
+.deck .deck__card--open {
+  color: #0b4980;
+  background: #fff;
+  border: 3px solid;
+  cursor: default;
+  pointer-events: none;
+  transform: rotateY(0);
+
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  animation-name: flipInY;
+}
+
+.deck .deck__card--show {
+  font-size: 36px;
+}
+
+@keyframes bounce {
+  from, 20%, 53%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transform: translate3d(0,0,0);
+  }
+
+  40%, 43% {
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transform: translate3d(0, -30px, 0);
+  }
+
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transform: translate3d(0, -15px, 0);
+  }
+
+  90% {
+    transform: translate3d(0,-4px,0);
+  }
+}
+
+.deck .deck__card--match {
+  font-size: 36px;
+  color: #00da00;
+  background: #fff;
+  border: 3px solid;
+  cursor: default;
+  pointer-events: none;
+
+  animation-name: bounce;
+  transform-origin: center bottom;
+}
+
+@keyframes flipOutY {
+  from {
+    transform: perspective(400px);
+  }
+
+  30% {
+    transform: perspective(400px) rotate3d(0, 1, 0, -15deg);
+    opacity: 1;
+  }
+
+  to {
+    transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+    opacity: 0;
+  }
+}
+
+.deck .deck__card--unmatch {
+  color: #c60000;
+
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  animation-name: flipOutY;
+}
+
+.deck__card--dom-hide {
+  display: none;
+}
+
+.deck__card--disabled {
+  pointer-events: none;
+}
 
 /*
  * Styles for congratulatory message popup
@@ -195,7 +290,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal {
@@ -203,16 +298,21 @@ h1 {
   top: 50%;
   left: 50%;
   width: 90%;
+  max-width: 500px;
   padding: 10px;
-  transform: translate(-50%, -50%);
   background-color: #fff;
+  transform: translate(-50%, -50%);
 }
 
 .modal__inner {
   margin: 0 auto;
-  border: 1px solid #000;
   padding: 10px;
   position: relative;
+  border: 2px solid #0b4980;
+  background: url(../img/medallist.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .game-stats {
@@ -223,12 +323,20 @@ h1 {
 }
 
 .modal__btn--close {
-  font-size: 1.5em;
-  padding: 0 5px;
-  position: absolute;
   top: 0;
   right: 0;
+  position: absolute;
+  padding: 5px;
   cursor: pointer;
+  font-size: 1.2em;
+  border-left: 2px solid #0b4980;
+  border-bottom: 2px solid #0b4980;
+  color: rgba(58, 113, 162, 0.50);
+  transition: 0.5s ease all;
+}
+
+.modal__btn--close:hover {
+  color: #0b4980;
 }
 
 .btn-holder {
@@ -236,7 +344,14 @@ h1 {
 }
 
 .modal__btn--restart {
-  padding: 10px 5px;
+  outline: none;
+  border: 2px solid #0b4980;
   cursor: pointer;
+  padding: 10px 8px;
   font-weight: 700;
+  transition: 0.5s ease all;
+}
+
+.modal__btn--restart:hover {
+  background-color: rgba(58, 113, 162, 0.30);
 }
