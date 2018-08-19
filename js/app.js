@@ -174,15 +174,7 @@ function starRatingInit() {
     gameTimerInit();
   }
 
-  if (movesCount > 2) {
-    removeStarItem(5);
-  }
-
   if (movesCount > 25) {
-    removeStarItem(4);
-  }
-
-  if (movesCount > 30) {
     removeStarItem(3);
   }
 
@@ -264,7 +256,7 @@ function gameRestartInit() {
   resetMovesCounter();
   resetTimer();
 
-  for (let i = 5; i > 1; i--) {
+  for (let i = 3; i > 1; i--) {
     resetStarItem(i);
   }
 }
@@ -352,5 +344,5 @@ function getStarRating() {
     return !(star.classList.contains('stars__item--remove'));
   });
   numOfStars = numOfStars.length;
-  return numOfStars;
+  return (numOfStars > 1) ? `${numOfStars} stars` : `${numOfStars } star`;
 }
