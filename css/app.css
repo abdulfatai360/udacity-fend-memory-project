@@ -1,6 +1,6 @@
 html {
   box-sizing: border-box;
-  font-weight: 93.75%;
+  font-size: 100%;
 }
 
 *,
@@ -20,7 +20,8 @@ body {
 body {
   /* Background pattern from Subtle Patterns */
   background: #ffffff url('../img/geometry2.png');
-  font-size: calc(1rem + (16 - 15) * (100vw - 320px) / (1366 - 320));
+  /* Fluid font-size snippet from CSS Tricks (https://css-tricks.com/snippets/css/fluid-typography/) */
+  font-size: calc(1rem + (17 - 16) * (100vw - 320px) / (1366 - 320));
   font-family: 'louis_george_cafe', 'Coda', sans-serif;
   line-height: 1.5;
   font-weight: 400;
