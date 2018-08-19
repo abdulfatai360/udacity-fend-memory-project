@@ -27,6 +27,10 @@ body {
   font-weight: 400;
 }
 
+.hide {
+  display: none;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -283,9 +287,9 @@ h2 {
   animation-name: flipOutY;
 }
 
-.deck__card--dom-hide {
+/* .deck__card--dom-hide {
   display: none;
-}
+} */
 
 .deck__card--disabled {
   pointer-events: none;

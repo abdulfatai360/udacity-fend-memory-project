@@ -21,6 +21,11 @@
  * CARD SHUFFLING FUNCTIONALITY
  */
 
+// TODO:
+// * Get a global list of all the cards
+// * Shuffles the cards
+// * Displays the cards on the DOM
+
 const deckCards = Array.from(document.querySelectorAll('.deck__card'));
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -53,6 +58,16 @@ displayCards(shuffle(deckCards));
  * CARD MATCH/MISMATCH FUNCTIONALITY
  */
 
+// TODO:
+// * Get a global reference to the parent element of the cards
+// * Attach an event listener to it...to target its children via Event Delegation
+// * Create two arrays: "tempOpenedCards" and "finOpenedCards"
+//   * "tempOpenedCards" tracks opened cards to check if they match or not
+//   * "finOpenedCards" tracks occurences of matched cards, for game wins purpose
+// * Create a function that initiates the game and check for functionalities on every card click
+// * Store every clicked card to a list and show its symbol
+// * Check if a pair of opened card matches or not and act accordingly
+
 const deck = document.querySelector('.deck');
 deck.addEventListener('click', gameStartInit);
 const tempOpenedCards = [];
@@ -80,16 +95,16 @@ function createTempOpenedCardList(elem) {
 }
 
 function showCardSymbol(elem) {
-  removeCardFromDOM(elem);
+  removeElemFromDOM(elem);
   elem.classList.add('deck__card--open', 'deck__card--show');
-  returnCardToDOM(elem);
+  returnElemToDOM(elem);
 }
 
-function removeCardFromDOM(elem) {
+function removeElemFromDOM(elem) {
   elem.classList.add('deck__card--dom-hide');
 }
 
-function returnCardToDOM(elem) {
+function returnElemToDOM(elem) {
   elem.classList.remove('deck__card--dom-hide');
 }
 
@@ -117,10 +132,10 @@ function disableCardFromClick(elem) {
 
 function yesCardsMatch(tempOpenedCards) {
   tempOpenedCards.forEach(card => {
-    removeCardFromDOM(card);
+    removeElemFromDOM(card);
     card.classList.remove('deck__card--open', 'deck__card--show');
     card.classList.add('deck__card--match');
-    returnCardToDOM(card);
+    returnElemToDOM(card);
   });
   tempOpenedCards.splice(0);
   finOpenedCards.push('yes');
@@ -138,9 +153,9 @@ function noCardsDontMatch(tempOpenedCards) {
 
 function returnCardsToDefault() {
   tempOpenedCards.forEach(card => {
-    removeCardFromDOM(card);
+    removeElemFromDOM(card);
     card.classList.remove('deck__card--open', 'deck__card--show', 'deck__card--unmatch');
-    returnCardToDOM(card);
+    returnElemToDOM(card);
   });
   tempOpenedCards.splice(0);
   for (const deckCard of deckCards) {
@@ -156,6 +171,10 @@ function enableCardForClick(elem) {
  * GAME MOVES COUNTER FUNCTIONALITY
  */
 
+// TODO:
+// * Create a global variable to store number of moves made
+// * Track every move and store its count
+
 let movesCount;
 
 function movesCounterInit() {
@@ -169,6 +188,11 @@ function movesCounterInit() {
  * PLAYER STAR RATING Functionality
  */
 
+// TODO:
+// * Determine the number of moves that will imply a star drop
+// * Remove a star from the DOM
+
+const starsHolder = document.querySelector('.score-panel .stars');
 function starRatingInit() {
   if (movesCount == 1) {
     gameTimerInit();
@@ -192,6 +216,12 @@ function removeStarItem(n) {
  * GAME TIMER FUNCTIONALITY
  */
 
+// TODO:
+// * Get a global reference to important variables/elements
+// * Keep track of the time used since the first card opened
+// * Attach event listeners to Window object to pause time when it loses focus
+
+const timer = document.querySelector('.timer');
 const hours = document.querySelector('.timer__hours');
 const minutes = document.querySelector('.timer__minutes');
 const seconds = document.querySelector('.timer__seconds');
@@ -212,9 +242,11 @@ function gameTimeTracker() {
     numOfMinutes = numOfMinutes % 60;
   }
 
+  removeElemFromDOM(timer);
   seconds.textContent = padTime(numOfSeconds);
   minutes.textContent = padTime(numOfMinutes);
   hours.textContent = padTime(numOfHours);
+  returnElemToDOM(timer);
 }
 
 function padTime(num) {
@@ -247,6 +279,11 @@ function stopTimer() {
  * GAME RESTART FUNCTIONALITY
  */
 
+// TODO:
+// * Get a global reference to important variables/elements
+// * Initializes the restart functionality
+// * Reset the arrays that stores opened cards, deck cards, moves counter, timer, and star rating
+
 const restartButton = document.querySelector('.restart');
 restartButton.addEventListener('click', gameRestartInit);
 
@@ -256,9 +293,11 @@ function gameRestartInit() {
   resetMovesCounter();
   resetTimer();
 
+  removeElemFromDOM(starsHolder);
   for (let i = 3; i > 1; i--) {
     resetStarItem(i);
   }
+  returnElemToDOM(starsHolder);
 }
 
 function resetOpenedCardLists() {
@@ -272,9 +311,11 @@ function resetDeckCards() {
     'deck__card--show',
     'deck__card--match'
   ];
+  removeElemFromDOM(deck);
   deckCards.forEach(deckCard => {
     deckCard.classList.remove(...deckResetClasses);
   });
+  returnElemToDOM(deck);
   displayCards(shuffle(deckCards));
 }
 
@@ -288,9 +329,11 @@ function resetTimer() {
   timeCount = 0;
   stopTimer();
   const timerContainer = document.querySelectorAll('.timer span');
+  removeElemFromDOM(timer);
   timerContainer.forEach(item => {
     item.textContent = '00';
   });
+  returnElemToDOM(timer);
 }
 
 function resetStarItem(n) {
@@ -302,11 +345,16 @@ function resetStarItem(n) {
  * GAME OVER FUNCTIONALITY
  */
 
+// TODO:
+// * Initializes the game over functionality
+// * Check if all cards have been matched and act accordingly
+// * Display the congratulatory msg on a modal
+// * Display the player's game statistics
+
 function gameOverInit() {
   if (finOpenedCards.length === (deckCards.length / 2)) {
     const popup = document.querySelector('.popup');
     const overlay = document.querySelector('.overlay');
-    const modal = document.querySelector('.modal');
     const modalClose = document.querySelector('.modal__btn--close');
     const modalRestart = document.querySelector('.modal__btn--restart');
 
@@ -329,13 +377,16 @@ function displayPopup(popupHolder) {
 }
 
 function displayGameStats() {
+  const gameStats = document.querySelector('.game-stats');
   const starRating = document.querySelector('.star-rating');
   const numOfMoves = document.querySelector('.no-of-moves');
   const completionTime = document.querySelector('.completion-time');
 
+  removeElemFromDOM(gameStats);
   starRating.textContent = getStarRating();
   numOfMoves.textContent = movesCount;
   completionTime.textContent = `${hours.textContent}hr ${minutes.textContent}min ${seconds.textContent}sec`;
+  returnElemToDOM(gameStats);
 }
 
 function getStarRating() {
